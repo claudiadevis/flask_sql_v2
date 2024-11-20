@@ -84,6 +84,8 @@ class Movimiento:
         tipo = dict_mov.get('tipo', 'G')
         cantidad = dict_mov.get('cantidad', 0)
 
+        self.id = dict_mov.get('id')
+
         try:
             self.fecha = date.fromisoformat(fecha)
         except ValueError:
