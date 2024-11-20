@@ -66,7 +66,10 @@ class DBManager:
         try:
             cursor.execute(sql, (id,))
             conexion.commit()
-            resultado = True
+            if cursor.rowcount > 0:
+                resultado = True
+            else:
+                resultado = False
         except:
             conexion.rollback()
 
