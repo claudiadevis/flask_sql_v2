@@ -76,6 +76,32 @@ class DBManager:
         conexion.close()
         return resultado
 
+    def obtenerMovimiento(self, id):
+        sql = 'SELECT id, fecha, concepto, tipo, cantidad FROM movimientos WHERE id=?'
+
+        conexion = sqlite3.connect(self.ruta)
+        cursor = conexion.cursor()
+        cursor.execute(sql, (id,))
+
+        datos = cursor.fetchone()
+        resultado = None
+        if datos:
+            nombres_columna = []
+
+            for columna in cursor.description:
+                nombres_columna.append(columna[0])
+
+            movimiento = {}
+            indice = 0
+            for nombre in nombres_columna:
+                movimiento[nombre] = datos[indice]
+                indice += 1
+            movimiento['fecha'] = date.fromisoformat(movimiento['fecha'])
+            resultado = movimiento
+
+        conexion.close()
+        return resultado
+
 
 class Movimiento:
 
@@ -154,6 +180,10 @@ class ListaMovimientos:
         raise NotImplementedError(
             'Debes usar una clase concreta de ListaMovimientos')
 
+    def buscarMovimiento(self, id):
+        raise NotImplementedError(
+            'Debes usar una clase concreta de ListaMovimientos')
+
     def __str__(self):
         result = ''
         for mov in self.movimientos:
@@ -188,6 +218,10 @@ class ListaMovimientosDB(ListaMovimientos):
                 f'El DB Manager ha fallado al borrar el movimiento con id {id}')
 
         return resultado
+
+    def buscarMovimiento(self, id):
+        db = DBManager(RUTA_DB)
+        return db.obtenerMovimiento(id)
 
 
 class ListaMovimientosCsv(ListaMovimientos):
