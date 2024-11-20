@@ -1,8 +1,9 @@
-from flask import render_template
+from flask import render_template, request
 
 from balance.models import ListaMovimientosCsv, ListaMovimientosDB
 
 from . import ALMACEN, app
+from .forms import MovimientoForm
 
 
 @app.route('/')
@@ -26,3 +27,11 @@ def delete(id):
         template = 'error.html'
 
     return render_template(template, id=id)
+
+
+@app.route('/editar/<int:id>')
+def actualizar(id):
+    if request.method == 'GET':
+        formulario = MovimientoForm()
+        return render_template('form_movimiento.html', form=formulario)
+    return f'TODO: tratar el método POST para actualizar el movimiento {id}'
