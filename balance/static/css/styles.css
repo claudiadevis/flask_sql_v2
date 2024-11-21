@@ -72,9 +72,9 @@ header {
 }
 
 .acciones .mini-boton {
-  border: solid thin var(--primary-color);
+  /* border: solid thin var(--primary-color); */
   padding: 0 5px;
-  background-color: lightgray;
+  /* background-color: lightgray; */
   color: var(--primary-color);
 }
 
