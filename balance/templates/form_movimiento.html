@@ -6,7 +6,7 @@
 
 {% block contenido %}
 
-<form action="/editar" method="post">
+<form action="/editar/{{ id }}" method="post">
   {{ form.csrf_token }}
 
   <!-- Fecha -->

@@ -4,7 +4,7 @@ from flask import render_template, request
 
 from . import ALMACEN, app
 from .forms import MovimientoForm
-from .models import ListaMovimientosCsv, ListaMovimientosDB
+from .models import ListaMovimientosCsv, ListaMovimientosDB, Movimiento
 
 
 @app.route('/')
@@ -30,11 +30,25 @@ def delete(id):
     return render_template(template, id=id)
 
 
-@app.route('/editar/<int:id>')
+@app.route('/editar/<int:id>', methods=['GET', 'POST'])
 def actualizar(id):
     if request.method == 'GET':
         lista = ListaMovimientosDB()
         movimiento = lista.buscarMovimiento(id)
         formulario = MovimientoForm(data=movimiento)
-        return render_template('form_movimiento.html', form=formulario)
-    return f'TODO: tratar el método POST para actualizar el movimiento {id}'
+        return render_template('form_movimiento.html', form=formulario, id=movimiento.get('id'))
+
+    if request.method == 'POST':
+        lista = ListaMovimientosDB()
+        mov_dict = lista.buscarMovimiento(id)
+        movimiento = Movimiento(mov_dict)
+        movimiento.fecha = date.today()
+        resultado = lista.editarMovimiento(movimiento)
+        if resultado == 1:
+            template = 'guardado_ok.html'
+        elif resultado == -1:
+            template = 'error_edit.html'
+        else:
+            template = 'error_inesperado.html'
+
+    return render_template(template)

@@ -102,6 +102,32 @@ class DBManager:
         conexion.close()
         return resultado
 
+    def actualizarMovimiento(self, movimiento):
+        conexion = sqlite3.connect(self.ruta)
+        cursor = conexion.cursor()
+        sql = 'UPDATE movimientos SET fecha=?, concepto=?, tipo=?, cantidad=? WHERE id=?'
+
+        resultado = -1
+
+        try:
+            params = (
+                movimiento.fecha,
+                movimiento.concepto,
+                movimiento.tipo,
+                movimiento.cantidad,
+                movimiento.id
+            )
+            cursor.execute(sql, params)
+            conexion.commit()
+            resultado = cursor.rowcount
+        except Exception as ex:
+            print('Ha ocurrido un error al actualizar el movimiento en la BD')
+            print(ex)
+            conexion.rollback()
+
+        conexion.close()
+        return resultado
+
 
 class Movimiento:
 
@@ -184,6 +210,10 @@ class ListaMovimientos:
         raise NotImplementedError(
             'Debes usar una clase concreta de ListaMovimientos')
 
+    def editarMovimiento(self, movimiento):
+        raise NotImplementedError(
+            'Debes usar una clase concreta de ListaMovimientos')
+
     def __str__(self):
         result = ''
         for mov in self.movimientos:
@@ -222,6 +252,10 @@ class ListaMovimientosDB(ListaMovimientos):
     def buscarMovimiento(self, id):
         db = DBManager(RUTA_DB)
         return db.obtenerMovimiento(id)
+
+    def editarMovimiento(self, movimiento):
+        db = DBManager(RUTA_DB)
+        return db.actualizarMovimiento(movimiento)
 
 
 class ListaMovimientosCsv(ListaMovimientos):
