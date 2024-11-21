@@ -1,6 +1,6 @@
 from datetime import date
 
-from flask import render_template, request
+from flask import flash, redirect, render_template, request, url_for
 
 from . import ALMACEN, app
 from .forms import MovimientoForm
@@ -57,13 +57,13 @@ def actualizar(id):
             resultado = lista.editarMovimiento(movimiento)
 
             if resultado == 1:
-                template = 'guardado_ok.html'
+                flash('El movimiento se ha actualizado correctamente')
             elif resultado == -1:
-                template = 'error_edit.html'
+                flash('El movimiento no se ha guardado. Inténtalo de nuevo.')
             else:
-                template = 'error_inesperado.html'
+                flash('Houston, tenemos un problema')
         else:
             print(formulario.errors)
             return render_template('form_movimiento.html', form=formulario, id=formulario.id.data)
 
-    return render_template(template)
+    return redirect(url_for('home'))
