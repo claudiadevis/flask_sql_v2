@@ -40,10 +40,21 @@ def actualizar(id):
 
     if request.method == 'POST':
         lista = ListaMovimientosDB()
-        mov_dict = lista.buscarMovimiento(id)
+        formulario = MovimientoForm(data=request.form)
+
+        fecha = formulario.fecha.data
+        mov_dict = {
+            'fecha': fecha.isoformat(),
+            'concepto': formulario.concepto.data,
+            'tipo': formulario.tipo.data,
+            'cantidad': formulario.cantidad.data,
+            'id': formulario.id.data
+        }
+
         movimiento = Movimiento(mov_dict)
-        movimiento.fecha = date.today()
+
         resultado = lista.editarMovimiento(movimiento)
+
         if resultado == 1:
             template = 'guardado_ok.html'
         elif resultado == -1:
