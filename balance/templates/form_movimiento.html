@@ -6,7 +6,19 @@
 
 {% block contenido %}
 
-<form action="/editar/{{ id }}" method="post">
+{% if form.errors %}
+<div class="errores">
+  <p>
+    El formulario tiene errores. ¿Puedes corregirlos?
+  </p>
+
+  <ul>
+    {{ form.errors}}
+  </ul>
+</div>
+{% endif %}
+
+<form action="/editar/{{ id }}" method="post" novalidate>
   {{ form.csrf_token }}
   {{ form.id }}
 
