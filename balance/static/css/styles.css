@@ -83,3 +83,9 @@ header {
   color: white;
   background-color: var(--primary-color);
 }
+
+.errors {
+  color: var(--error-color);
+  font-size: small;
+  margin: 0;
+}

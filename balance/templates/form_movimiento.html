@@ -13,7 +13,7 @@
   </p>
 
   <ul>
-    <!-- {{form.errors}} -->
+    <!-- {{form.errors}}
 
     {% for clave, valor in form.errors.items() %}
     <li>{{clave}} tiene errores</li>
@@ -23,6 +23,7 @@
     </ul>
     {% endfor %}
     {% endfor %}
+    -->
   </ul>
 </div>
 {% endif %}
@@ -35,12 +36,22 @@
   <div class="campo-formulario">
     {{ form.fecha.label }}
     {{ form.fecha }}
+    {% if form.errors['fecha'] %}
+    {% for error_fecha in form.errors['fecha'] %}
+    <p class="errors">{{error_fecha}}</p>
+    {% endfor %}
+    {% endif %}
   </div>
 
   <!-- Concepto -->
   <div class="campo-formulario">
     {{ form.concepto.label }}
     {{ form.concepto }}
+    {% if form.errors['concepto'] %}
+    {% for error_concepto in form.errors['concepto'] %}
+    <p class="errors">{{error_concepto}}</p>
+    {% endfor %}
+    {% endif %}
   </div>
 
   <!-- Tipo -->
@@ -55,6 +66,11 @@
   <div class="campo-formulario">
     {{ form.cantidad.label }}
     {{ form.cantidad }}
+    {% if form.errors['cantidad'] %}
+    {% for error_cantidad in form.errors['cantidad'] %}
+    <p class="errors">{{error_cantidad}}</p>
+    {% endfor %}
+    {% endif %}
   </div>
 
   <!-- Botón de enviar -->
