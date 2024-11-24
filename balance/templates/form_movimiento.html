@@ -13,7 +13,16 @@
   </p>
 
   <ul>
-    {{ form.errors}}
+    <!-- {{form.errors}} -->
+
+    {% for clave, valor in form.errors.items() %}
+    <li>{{clave}} tiene errores</li>
+    {% for mensaje in valor%}
+    <ul>
+      <li>{{ mensaje }}</li>
+    </ul>
+    {% endfor %}
+    {% endfor %}
   </ul>
 </div>
 {% endif %}
